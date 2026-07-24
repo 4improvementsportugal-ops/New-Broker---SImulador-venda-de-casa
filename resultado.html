@@ -1,698 +1,420 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>O seu resultado | NewBroker Master</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>O seu diagnóstico · New Broker Master</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
 
-  <!-- Meta Pixel -->
-  <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window,document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init','4639264789634405');
-  fbq('track','PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=4639264789634405&ev=PageView&noscript=1"/></noscript>
+<script>
+/* ============================================================
+   CONFIGURAÇÃO · BLOCO 1
+   ============================================================ */
+var PIXEL_ID   = 'PIXEL_ID_AQUI';                 /* ← substituir */
+var CHAVE_UNICA = 'diag_newbrokermaster';
+var CHAVE_CONSENTIMENTO = CHAVE_UNICA + '_cookies';
+var CHAVE_PV   = CHAVE_UNICA + '_pv';
 
-  <!-- Redirect guard — fast, runs before body renders -->
-  <script>
-  (function(){
-    if(!sessionStorage.getItem('nbm_quiz_v1')){
-      window.location.replace('index.html');
-    }
-  })();
-  </script>
+var WHATSAPP_NUM = '351966157771';
+var TELEFONE     = '966157771';
+var INSTAGRAM    = 'https://www.instagram.com/newbrokermaster/';
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+var PIXEL_ATIVO = PIXEL_ID.indexOf('AQUI') === -1;
 
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* ============================================================
+   ★ ORDEM SAGRADA ★
+   1º  lê sessionStorage
+   2º  sem dados → replace(index.html) e o pixel NUNCA existe
+   3º  só com dados + consentimento → pixel + PageView (uma vez)
+   4º  NUNCA disparar 'Lead' aqui
+   ============================================================ */
+var DADOS = null;
+try { DADOS = JSON.parse(sessionStorage.getItem(CHAVE_UNICA)); } catch(e){ DADOS = null; }
 
-    :root{
-      --blue:#056195;
-      --blue-dk:#044f7a;
-      --blue-xdk:#033d61;
-      --white:#FFFFFF;
-      --cream:#F0F7FC;
-      --text:#1A2733;
-      --text-mid:#475569;
-      --text-lt:#94A3B8;
-      --err:#DC2626;
-      --border:#CFE8F5;
-      --navy:#056195;
-      --navy-mid:#044f7a;
-    }
+if(!DADOS || !DADOS.A || !DADOS.D){
+  window.location.replace('index.html');
+} else {
+  var consentiu = false;
+  try { consentiu = localStorage.getItem(CHAVE_CONSENTIMENTO) === 'aceite'; } catch(e){}
 
-    html{scroll-behavior:smooth}
+  if(consentiu && PIXEL_ATIVO){
+    var jaContou = false;
+    try { jaContou = sessionStorage.getItem(CHAVE_PV) === '1'; } catch(e){}
 
-    body{
-      font-family:'Inter',sans-serif;
-      background:var(--cream);
-      color:var(--text);
-      min-height:100vh;
-    }
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', PIXEL_ID);
 
-    /* ── HEADER ── */
-    .r-header{
-      background:var(--navy);
-      padding:16px 24px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      position:sticky;top:0;z-index:10;
+    if(!jaContou){
+      fbq('track','PageView');
+      try { sessionStorage.setItem(CHAVE_PV, '1'); } catch(e){}
     }
-    .r-brand{display:flex;align-items:center;gap:10px}
-    .r-logo{
-      height:34px;
-      width:auto;
-      border-radius:5px;
-      display:block;
-    }
-    .r-back{
-      font-size:11px;color:rgba(255,255,255,.4);
-      text-decoration:none;
-      letter-spacing:.5px;
-      transition:color .2s;
-    }
-    .r-back:hover{color:rgba(255,255,255,.8)}
+  }
+}
+</script>
 
-    /* ── HERO BAND ── */
-    .r-hero{
-      background:linear-gradient(150deg,#033d61,#056195 60%,#033d61);
-      padding:52px 24px 60px;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .r-hero::before{
-      content:'';position:absolute;inset:0;
-      background:radial-gradient(ellipse 70% 55% at 50% 30%,rgba(255,255,255,.07),transparent 70%);
-      pointer-events:none;
-    }
-    .r-hero::after{
-      content:'';position:absolute;
-      bottom:0;left:0;right:0;height:1px;
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
-    }
+<style>
+:root{
+  --principal:#056195;
+  --destaque:#43a8b3;
+  --fundo:#F5FAFC;
+  --texto:#123547;
+  --texto-suave:#4d6b7d;
+  --borda:#dbe9f0;
+  --branco:#fff;
+  --verde:#2e8b6f;
+  --terracota:#c47a3f;
+  --vermelho:#c0392b;
+  --r:22px;--raio:18px;
+  --sombra:0 4px 20px rgba(18,53,71,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--fundo);color:var(--texto);line-height:1.55;
+}
+.wrap{max-width:720px;margin:0 auto;padding:0 14px 60px}
+@media(min-width:900px){.wrap{padding:0 18px 70px}}
 
-    .r-eyebrow{
-      font-size:10px;font-weight:700;letter-spacing:4px;
-      text-transform:uppercase;color:rgba(255,255,255,.85);
-      margin-bottom:14px;
-    }
+/* ---------- CABEÇALHO ---------- */
+.topo{
+  background:var(--principal);color:#fff;
+  margin:14px 14px 0;border-radius:var(--r) var(--r) 0 0;
+  padding:26px 22px 46px;position:relative;overflow:hidden;
+}
+@media(min-width:900px){ .topo{margin:18px 18px 0;padding:32px 34px 56px} }
+.topo::after{
+  content:'';position:absolute;width:420px;height:420px;
+  right:-180px;top:-200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(67,168,179,.34),transparent 70%);
+}
+.topo-in{max-width:690px;margin:0 auto;position:relative;z-index:1}
+.topo-logo{
+  height:34px;width:auto;margin-bottom:26px;
+  filter:brightness(0) invert(1);opacity:.97;
+}
+.veredicto-lbl{font-size:14px;color:rgba(255,255,255,.82);margin-bottom:4px}
+.veredicto{
+  font-family:'Instrument Sans','Inter',system-ui,sans-serif;font-weight:600;
+  font-size:clamp(34px,9vw,58px);line-height:1.05;letter-spacing:-.03em;
+}
+.veredicto-nota{
+  margin-top:12px;font-size:15.5px;color:rgba(255,255,255,.9);max-width:46ch;
+}
+.aviso{
+  margin-top:20px;font-size:12px;color:rgba(255,255,255,.62);
+  border-top:1px solid rgba(255,255,255,.18);padding-top:12px;
+}
 
-    .r-greeting{
-      font-family:'Cormorant Garamond',serif;
-      font-size:clamp(20px,3.5vw,28px);
-      font-weight:300;color:rgba(255,255,255,.75);
-      margin-bottom:4px;
-    }
-    .r-greeting strong{color:#fff;font-weight:400}
+/* ---------- CARTÕES ---------- */
+.card{
+  background:var(--branco);border:1px solid var(--borda);
+  border-radius:var(--raio);box-shadow:var(--sombra);
+  padding:26px 22px;margin-top:16px;
+}
+.card.primeiro{margin-top:-24px;position:relative;z-index:2}
+.card > h2{
+  font-family:'Instrument Sans','Inter',system-ui,sans-serif;font-size:20px;font-weight:600;
+  letter-spacing:-.02em;margin-bottom:4px;
+}
+.card > p.sub{font-size:13.5px;color:var(--texto-suave);margin-bottom:20px}
 
-    /* Score display */
-    .score-block{
-      margin:36px auto 0;
-      max-width:460px;
-    }
+/* ---------- EIXOS ---------- */
+.eixo{margin-bottom:20px}
+.eixo:last-child{margin-bottom:0}
+.eixo-topo{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.eixo-nome{font-size:14.5px;font-weight:600}
+.eixo-pct{font-size:14.5px;font-weight:700}
+.eixo-tr{height:9px;background:#eaf2f6;border-radius:99px;overflow:hidden}
+.eixo-tr i{display:block;height:100%;width:0;border-radius:99px;
+  transition:width 1.1s cubic-bezier(.22,1,.36,1)}
+.eixo-leg{font-size:12.5px;color:var(--texto-suave);margin-top:6px}
+.bom{background:var(--verde)} .bom-t{color:var(--verde)}
+.med{background:var(--terracota)} .med-t{color:var(--terracota)}
+.mau{background:var(--vermelho)} .mau-t{color:var(--vermelho)}
 
-    .score-num{
-      font-family:'Cormorant Garamond',serif;
-      font-size:clamp(64px,14vw,96px);
-      font-weight:400;
-      line-height:1;
-      color:#fff;
-      position:relative;
-      display:inline-block;
-    }
-    .score-num span.denom{
-      font-size:.38em;
-      font-weight:300;
-      color:rgba(255,255,255,.45);
-      vertical-align:super;
-      margin-left:4px;
-    }
+/* ---------- CHECKLIST ---------- */
+.doc{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--borda)}
+.doc:last-child{border-bottom:none;padding-bottom:0}
+.doc-ic{
+  width:24px;height:24px;border-radius:50%;flex:0 0 auto;
+  display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff;margin-top:1px;
+}
+.doc-ic.sim{background:var(--verde)}
+.doc-ic.nao{background:#d6e3ea;color:var(--texto-suave)}
+.doc-txt b{font-size:14.5px;font-weight:600;display:block}
+.doc-txt small{font-size:12.5px;color:var(--texto-suave);display:block;margin-top:2px;line-height:1.45}
+.tag-bloq{
+  display:inline-block;margin-top:6px;font-size:10.5px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;
+  background:#fdeceb;color:var(--vermelho);
+  padding:3px 8px;border-radius:5px;
+}
 
-    .badge-pill{
-      display:inline-block;
-      font-size:11px;font-weight:700;letter-spacing:2.5px;
-      text-transform:uppercase;
-      padding:6px 18px;
-      border-radius:50px;
-      margin-top:12px;
-      margin-bottom:24px;
-    }
-    .badge-exc{background:rgba(45,125,74,.2);color:#4ADE80;border:1px solid rgba(74,222,128,.25)}
-    .badge-bom{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.3)}
-    .badge-mod{background:rgba(180,83,9,.18);color:#FBA94C;border:1px solid rgba(251,169,76,.25)}
+/* ---------- TRAVÕES ---------- */
+.travao{display:flex;gap:13px;padding:16px 0;border-bottom:1px solid var(--borda)}
+.travao:last-child{border-bottom:none;padding-bottom:0}
+.travao-n{
+  width:27px;height:27px;border-radius:8px;flex:0 0 auto;
+  background:#fdeceb;color:var(--vermelho);
+  display:grid;place-items:center;font-weight:700;font-size:13.5px;margin-top:1px;
+}
+.travao b{font-size:15px;font-weight:600;display:block;margin-bottom:3px}
+.travao p{font-size:13.5px;color:var(--texto-suave);line-height:1.5}
+.sem-travoes{
+  background:#eaf6f1;border:1px solid #cbe6db;border-radius:12px;
+  padding:16px;font-size:14px;color:#1f6b54;
+}
 
-    /* Score bar */
-    .score-bar-wrap{
-      height:6px;
-      background:rgba(255,255,255,.1);
-      border-radius:3px;
-      overflow:hidden;
-      margin-bottom:14px;
-    }
-    .score-bar-fill{
-      height:100%;
-      border-radius:3px;
-      width:0%;
-      transition:width 1.1s cubic-bezier(.4,0,.2,1);
-    }
-    .score-bar-fill.exc{background:linear-gradient(90deg,#16a34a,#4ADE80)}
-    .score-bar-fill.bom{background:linear-gradient(90deg,rgba(255,255,255,.6),#fff)}
-    .score-bar-fill.mod{background:linear-gradient(90deg,#B45309,#FBA94C)}
+/* ---------- PASSOS ---------- */
+.passo-l{display:flex;gap:13px;padding:15px 0;border-bottom:1px solid var(--borda)}
+.passo-l:last-child{border-bottom:none;padding-bottom:0}
+.passo-n{
+  width:27px;height:27px;border-radius:8px;flex:0 0 auto;
+  background:var(--principal);color:#fff;
+  display:grid;place-items:center;font-weight:700;font-size:13.5px;margin-top:1px;
+}
+.passo-l b{font-size:15px;font-weight:600;display:block;margin-bottom:3px}
+.passo-l p{font-size:13.5px;color:var(--texto-suave);line-height:1.5}
 
-    .badge-msg{
-      font-size:14px;font-weight:300;
-      color:rgba(255,255,255,.65);
-      line-height:1.7;
-    }
-
-    /* ── BODY ── */
-    .r-body{
-      max-width:680px;
-      margin:0 auto;
-      padding:48px 20px 80px;
-    }
-
-    /* Cards row */
-    .cards-row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:16px;
-      margin-bottom:32px;
-    }
-    @media(max-width:480px){.cards-row{grid-template-columns:1fr}}
-
-    .info-card{
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:22px 20px;
-    }
-    .ic-label{
-      font-size:10px;font-weight:700;letter-spacing:3px;
-      text-transform:uppercase;color:var(--blue);
-      margin-bottom:10px;
-    }
-    .ic-value{
-      font-family:'Cormorant Garamond',serif;
-      font-size:20px;font-weight:600;
-      color:var(--text);line-height:1.25;
-    }
-
-    /* Quote */
-    .r-quote{
-      background:var(--navy);
-      border-radius:12px;
-      padding:28px 28px 28px 32px;
-      position:relative;
-      margin-bottom:40px;
-    }
-    .r-quote::before{
-      content:'"';
-      position:absolute;
-      top:12px;left:18px;
-      font-family:'Cormorant Garamond',serif;
-      font-size:64px;font-weight:300;
-      color:rgba(255,255,255,.25);
-      line-height:1;
-    }
-    .r-quote p{
-      font-family:'Cormorant Garamond',serif;
-      font-size:19px;font-weight:400;font-style:italic;
-      color:rgba(255,255,255,.9);line-height:1.65;
-      padding-left:8px;
-    }
-    .r-quote cite{
-      display:block;margin-top:14px;
-      font-family:'Inter',sans-serif;
-      font-size:11px;font-weight:500;
-      letter-spacing:2px;text-transform:uppercase;
-      color:rgba(255,255,255,.55);
-      padding-left:8px;
-    }
-
-    /* Section title */
-    .sec-title{
-      font-family:'Cormorant Garamond',serif;
-      font-size:clamp(20px,3.5vw,26px);
-      font-weight:600;color:var(--text);
-      margin-bottom:24px;
-    }
-
-    /* Timeline */
-    .timeline{
-      position:relative;
-      margin-bottom:48px;
-      padding-left:0;
-    }
-    .tl-item{
-      display:flex;
-      gap:20px;
-      position:relative;
-      padding-bottom:28px;
-    }
-    .tl-item:last-child{padding-bottom:0}
-
-    .tl-left{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      flex-shrink:0;
-    }
-    .tl-dot{
-      width:40px;height:40px;
-      background:var(--blue);
-      border:2px solid rgba(5,97,149,.15);
-      border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      font-family:'Cormorant Garamond',serif;
-      font-size:16px;font-weight:600;
-      color:#fff;
-      flex-shrink:0;
-    }
-    .tl-line{
-      flex:1;
-      width:1px;
-      background:linear-gradient(rgba(5,97,149,.2),transparent);
-      margin-top:6px;
-    }
-    .tl-item:last-child .tl-line{display:none}
-
-    .tl-content{padding-top:8px}
-    .tl-step{
-      font-size:10px;font-weight:700;letter-spacing:3px;
-      text-transform:uppercase;color:var(--blue);
-      margin-bottom:5px;
-    }
-    .tl-title{
-      font-size:16px;font-weight:600;color:var(--text);
-      margin-bottom:5px;
-    }
-    .tl-desc{
-      font-size:13px;color:var(--text-mid);line-height:1.65;
-    }
-
-    /* Avisos */
-    .avisos{margin-bottom:48px}
-    .aviso{
-      display:flex;
-      gap:18px;
-      padding:20px;
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:10px;
-      margin-bottom:12px;
-    }
-    .av-num{
-      width:36px;height:36px;
-      background:var(--blue);
-      color:#fff;
-      font-family:'Cormorant Garamond',serif;
-      font-size:17px;font-weight:600;
-      border-radius:8px;
-      display:flex;align-items:center;justify-content:center;
-      flex-shrink:0;
-      margin-top:2px;
-    }
-    .av-body{}
-    .av-title{
-      font-size:14px;font-weight:600;color:var(--text);
-      margin-bottom:5px;
-    }
-    .av-text{
-      font-size:13px;color:var(--text-mid);line-height:1.65;
-    }
-
-    /* CTAs */
-    .ctas-title{
-      font-family:'Cormorant Garamond',serif;
-      font-size:clamp(20px,3.5vw,26px);
-      font-weight:600;color:var(--text);
-      margin-bottom:8px;
-    }
-    .ctas-sub{
-      font-size:14px;color:var(--text-mid);
-      line-height:1.65;margin-bottom:28px;
-    }
-
-    .cta-primary{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      width:100%;
-      background:#25D366;
-      color:#fff;
-      font-size:15px;font-weight:700;
-      padding:18px;
-      border-radius:10px;
-      text-decoration:none;
-      transition:all .22s ease;
-      margin-bottom:12px;
-    }
-    .cta-primary:hover{
-      background:#20b258;
-      transform:translateY(-2px);
-      box-shadow:0 10px 28px rgba(37,211,102,.25);
-    }
-    .cta-primary svg{width:22px;height:22px;flex-shrink:0}
-
-    .ctas-row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-    @media(max-width:400px){.ctas-row{grid-template-columns:1fr}}
-
-    .cta-sec{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:14px;
-      border-radius:10px;
-      text-decoration:none;
-      font-size:13px;font-weight:600;
-      transition:all .2s ease;
-      border:1.5px solid;
-    }
-    .cta-sec svg{width:18px;height:18px;flex-shrink:0}
-
-    .cta-tel{
-      color:var(--blue);
-      border-color:var(--blue);
-      background:#fff;
-    }
-    .cta-tel:hover{background:var(--blue);color:#fff}
-
-    .cta-ig{
-      color:#C13584;
-      border-color:#C13584;
-      background:#fff;
-    }
-    .cta-ig:hover{background:#C13584;color:#fff}
-
-    /* Footer */
-    .r-footer{
-      background:var(--navy);
-      text-align:center;
-      padding:24px;
-      font-size:11px;color:rgba(255,255,255,.3);
-      letter-spacing:.5px;
-    }
-    .r-footer a{color:rgba(255,255,255,.4);text-decoration:none}
-    .r-footer a:hover{color:rgba(255,255,255,.75)}
-
-    /* Divider */
-    .divider{height:1px;background:var(--border);margin:40px 0}
-
-    /* Animate on load */
-    .fade-in{
-      opacity:0;
-      transform:translateY(16px);
-      transition:opacity .55s ease, transform .55s ease;
-    }
-    .fade-in.visible{opacity:1;transform:translateY(0)}
-  </style>
+/* ---------- CTA ---------- */
+.cta{
+  background:var(--principal);color:#fff;border-radius:var(--raio);
+  padding:30px 22px;margin-top:24px;position:relative;overflow:hidden;
+}
+.cta::after{
+  content:'';position:absolute;width:340px;height:340px;
+  left:-150px;bottom:-190px;border-radius:50%;
+  background:radial-gradient(circle,rgba(67,168,179,.32),transparent 70%);
+}
+.cta-in{position:relative;z-index:1}
+.cta h2{font-family:'Instrument Sans','Inter',system-ui,sans-serif;font-size:23px;font-weight:600;
+  letter-spacing:-.02em;line-height:1.2;margin-bottom:9px}
+.cta p{font-size:14.5px;color:rgba(255,255,255,.88);margin-bottom:22px;max-width:44ch}
+.b-wa,.b-tel{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  width:100%;padding:16px;border-radius:12px;font-weight:600;font-size:15.5px;
+  text-decoration:none;margin-bottom:10px;
+}
+.b-wa{background:#25D366;color:#0b3d20}
+.b-tel{background:rgba(255,255,255,.13);color:#fff;border:1.5px solid rgba(255,255,255,.3)}
+.b-ig{
+  display:block;text-align:center;margin-top:14px;
+  font-size:13px;color:rgba(255,255,255,.72);text-decoration:none;
+}
+.b-ig:hover{color:#fff}
+.rodape{text-align:center;font-size:12px;color:var(--texto-suave);margin-top:26px;line-height:1.6}
+</style>
 </head>
 <body>
 
-<!-- ═══════════════════════ HEADER ═══════════════════════ -->
-<header class="r-header">
-  <div class="r-brand">
-    <img src="data:image/jpeg;base64,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" alt="NewBroker Master" class="r-logo">
+<header class="topo">
+  <div class="topo-in">
+    <img class="topo-logo" src="data:image/png;base64,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" alt="New Broker Master Imobiliária">
+    <div class="veredicto-lbl">O seu diagnóstico · tempo estimado até vender</div>
+    <div class="veredicto" id="v-tempo"></div>
+    <p class="veredicto-nota" id="v-nota"></p>
+    <p class="aviso">Estimativa indicativa, calculada a partir das suas respostas. Não substitui uma avaliação presencial do imóvel.</p>
   </div>
-  <a href="index.html" class="r-back">← Refazer simulação</a>
 </header>
 
-<!-- ═══════════════════════ HERO / SCORE ═══════════════════════ -->
-<section class="r-hero">
-  <p class="r-eyebrow">Resultado da sua simulação</p>
-  <p class="r-greeting">Olá, <strong id="sNome">—</strong></p>
+<main class="wrap">
 
-  <div class="score-block">
-    <div class="score-num" id="sScoreNum">—<span class="denom">/10</span></div>
-    <br>
-    <span class="badge-pill" id="sBadge">—</span>
+  <!-- 2. EIXOS -->
+  <section class="card primeiro">
+    <h2>Onde está a sua casa hoje</h2>
+    <p class="sub">Três eixos independentes. Não é uma nota, é um mapa do que já está feito e do que falta.</p>
 
-    <div class="score-bar-wrap">
-      <div class="score-bar-fill" id="sBar"></div>
+    <div class="eixo">
+      <div class="eixo-topo"><span class="eixo-nome">Documentação</span><span class="eixo-pct" id="p-doc"></span></div>
+      <div class="eixo-tr"><i id="b-doc"></i></div>
+      <p class="eixo-leg">Mede se tem em mãos o que é preciso para anunciar e escriturar sem sobressaltos.</p>
     </div>
 
-    <p class="badge-msg" id="sBadgeMsg">—</p>
-  </div>
-</section>
-
-<!-- ═══════════════════════ BODY ═══════════════════════ -->
-<main class="r-body">
-
-  <!-- Info cards -->
-  <div class="cards-row fade-in" id="f1">
-    <div class="info-card">
-      <p class="ic-label">Prazo indicado</p>
-      <p class="ic-value" id="sPrazo">—</p>
-    </div>
-    <div class="info-card">
-      <p class="ic-label">Motivo principal</p>
-      <p class="ic-value" id="sMotivo">—</p>
-    </div>
-  </div>
-
-  <!-- Quote -->
-  <div class="r-quote fade-in" id="f2">
-    <p>A troca de casa é uma das decisões mais importantes da sua vida. Com os dados certos e o apoio de especialistas, pode ser também a mais gratificante — e mais tranquila.</p>
-    <cite>Equipa NewBroker Master</cite>
-  </div>
-
-  <!-- Timeline -->
-  <div class="fade-in" id="f3">
-    <h2 class="sec-title">O processo de troca de casa</h2>
-    <div class="timeline">
-
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot">1</div>
-          <div class="tl-line"></div>
-        </div>
-        <div class="tl-content">
-          <p class="tl-step">Etapa 1</p>
-          <p class="tl-title">Avaliação do imóvel atual</p>
-          <p class="tl-desc">O ponto de partida é conhecer o valor real de mercado do seu imóvel. Uma avaliação profissional define a margem de negociação e o capital disponível para a próxima compra.</p>
-        </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot">2</div>
-          <div class="tl-line"></div>
-        </div>
-        <div class="tl-content">
-          <p class="tl-step">Etapa 2</p>
-          <p class="tl-title">Definição da estratégia</p>
-          <p class="tl-desc">Vender primeiro ou comprar primeiro? A decisão depende do seu perfil financeiro, do mercado local e da sua tolerância ao risco. O consultor define a estratégia mais segura para si.</p>
-        </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-dot">3</div>
-          <div class="tl-line"></div>
-        </div>
-        <div class="tl-content">
-          <p class="tl-step">Etapa 3</p>
-          <p class="tl-title">Escritura e mudança</p>
-          <p class="tl-desc">Com as negociações concluídas e o financiamento aprovado, avança para a escritura. O consultor coordena todos os processos para que a transição seja fluida e sem surpresas.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- Avisos -->
-  <div class="avisos fade-in" id="f4">
-    <h2 class="sec-title">O que deve considerar antes de avançar</h2>
-
-    <div class="aviso">
-      <div class="av-num">01</div>
-      <div class="av-body">
-        <p class="av-title">Conheça o valor real do seu imóvel</p>
-        <p class="av-text">Uma avaliação rigorosa evita negociações com preço errado. Imóveis sobrevalorizados ficam mais tempo no mercado — o que compromete a troca. Peça uma avaliação profissional antes de colocar à venda.</p>
-      </div>
+    <div class="eixo">
+      <div class="eixo-topo"><span class="eixo-nome">Preço vs. Mercado</span><span class="eixo-pct" id="p-preco"></span></div>
+      <div class="eixo-tr"><i id="b-preco"></i></div>
+      <p class="eixo-leg">Mede se o seu valor está ancorado em dados de mercado ou em expectativa pessoal.</p>
     </div>
 
-    <div class="aviso">
-      <div class="av-num">02</div>
-      <div class="av-body">
-        <p class="av-title">Calcule todos os encargos</p>
-        <p class="av-text">IMT, Imposto do Selo, honorários de notário, registos e comissões de mediação podem representar 5% a 8% do valor de aquisição. Inclua estes custos no seu orçamento antes de definir o preço máximo de compra.</p>
-      </div>
+    <div class="eixo">
+      <div class="eixo-topo"><span class="eixo-nome">Estado e Prontidão</span><span class="eixo-pct" id="p-estado"></span></div>
+      <div class="eixo-tr"><i id="b-estado"></i></div>
+      <p class="eixo-leg">Mede se a casa pode ser mostrada já e a impressão que deixa em visita.</p>
     </div>
+  </section>
 
-    <div class="aviso">
-      <div class="av-num">03</div>
-      <div class="av-body">
-        <p class="av-title">Crédito habitação</p>
-        <p class="av-text" id="sAvisoCred">—</p>
-      </div>
-    </div>
-  </div>
+  <!-- 3. CHECKLIST -->
+  <section class="card">
+    <h2>Os seus documentos</h2>
+    <p class="sub" id="doc-sub"></p>
+    <div id="lista-docs"></div>
+  </section>
 
-  <div class="divider"></div>
+  <!-- 4. TRAVÕES -->
+  <section class="card">
+    <h2>O que está a travar a sua venda</h2>
+    <p class="sub">Identificado a partir das respostas que deu. Por ordem de gravidade.</p>
+    <div id="lista-travoes"></div>
+  </section>
 
-  <!-- CTAs -->
-  <div class="fade-in" id="f5">
-    <h2 class="ctas-title">Fale com um consultor NewBroker Master</h2>
-    <p class="ctas-sub">
-      A sua análise está pronta. O próximo passo é uma conversa sem compromisso com a nossa equipa — para transformar o seu resultado numa estratégia concreta.
-    </p>
+  <!-- 5. PRÓXIMOS PASSOS -->
+  <section class="card">
+    <h2>O que fazer a seguir</h2>
+    <p class="sub">Ordenado para o seu caso concreto, não é uma lista genérica.</p>
+    <div id="lista-passos"></div>
+  </section>
 
-    <a class="cta-primary" id="ctaWa" href="#" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-      Falar pelo WhatsApp
-    </a>
-
-    <div class="ctas-row">
-      <a class="cta-sec cta-tel" id="ctaTel" href="tel:+351966157771">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
-        </svg>
+  <!-- 6. CTA -->
+  <section class="cta">
+    <div class="cta-in">
+      <h2 id="cta-titulo">Quer saber quanto vale MESMO a sua casa?</h2>
+      <p id="cta-texto">Uma avaliação gratuita e sem compromisso, feita no imóvel, com dados reais de vendas fechadas na sua zona.</p>
+      <a class="b-wa" id="lnk-wa" href="#" target="_blank" rel="noopener">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.6c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.3c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2"/></svg>
+        Falar por WhatsApp
+      </a>
+      <a class="b-tel" id="lnk-tel" href="#">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
         Ligar agora
       </a>
-
-      <a class="cta-sec cta-ig" id="ctaIg" href="https://www.instagram.com/newbrokermaster/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-        </svg>
-        Instagram
-      </a>
+      <a class="b-ig" id="lnk-ig" href="#" target="_blank" rel="noopener">Ver imóveis no Instagram →</a>
     </div>
-  </div>
+  </section>
 
-</main>
-
-<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
-<footer class="r-footer">
-  <p>© 2025 NewBroker Master · Todos os direitos reservados</p>
-  <p style="margin-top:6px">
-    <a href="https://www.instagram.com/newbrokermaster/" target="_blank" rel="noopener">Instagram</a>
-    &nbsp;·&nbsp;
-    <a href="index.html">Refazer simulação</a>
+  <p class="rodape">
+    New Broker Master · Imobiliária<br>
+    Diagnóstico gerado automaticamente a partir das suas respostas.
   </p>
-</footer>
+</main>
 
 <script>
 (function(){
-  var SKEY   = 'nbm_quiz_v1';
-  var ORIGEM = 'NewBroker Master — Simulador Troca de Casa';
+  if(!DADOS || !DADOS.A || !DADOS.D) return;
+  var A = DADOS.A, D = DADOS.D;
 
-  var raw = sessionStorage.getItem(SKEY);
-  if(!raw){ location.replace('index.html'); return; }
+  /* ---------- VEREDICTO ---------- */
+  document.getElementById('v-tempo').textContent = D.tempo;
+  document.getElementById('v-nota').textContent  = D.nota;
 
-  var data;
-  try{ data = JSON.parse(raw); } catch(e){ location.replace('index.html'); return; }
+  /* ---------- EIXOS ---------- */
+  function classe(v){ return v >= 70 ? 'bom' : (v >= 45 ? 'med' : 'mau'); }
+  function pintar(idBarra, idPct, valor){
+    var b = document.getElementById(idBarra);
+    var p = document.getElementById(idPct);
+    b.className = classe(valor);
+    p.className = 'eixo-pct ' + classe(valor) + '-t';
+    p.textContent = valor + '%';
+    setTimeout(function(){ b.style.width = valor + '%'; }, 220);
+  }
+  pintar('b-doc','p-doc', D.doc);
+  pintar('b-preco','p-preco', D.preco);
+  pintar('b-estado','p-estado', D.estado);
 
-  var a     = data.answers;
-  var score = data.score;
+  /* ---------- CHECKLIST ---------- */
+  var ONDE = {
+    'Caderneta predial': 'Pede-se no Portal das Finanças, em poucos minutos e sem custo.',
+    'Certidão permanente do registo': 'Pede-se online na Conservatória do Registo Predial (predialonline.pt).',
+    'Licença de utilização': 'Pede-se na Câmara Municipal do concelho do imóvel.',
+    'Certificado energético': 'Emitido por um perito qualificado ADENE. Costuma demorar 1 a 2 semanas.'
+  };
+  var todos = ['Caderneta predial','Certidão permanente do registo','Licença de utilização','Certificado energético'];
+  var faltam = D.faltam || [];
+  var html = '';
+  todos.forEach(function(d){
+    var falta = faltam.indexOf(d) !== -1;
+    html += '<div class="doc">'
+      + '<div class="doc-ic ' + (falta ? 'nao' : 'sim') + '" aria-hidden="true">' + (falta ? '✕' : '✓') + '</div>'
+      + '<div class="doc-txt"><b>' + d + '</b><small>' + (falta ? ONDE[d] : 'Já o tem. Um problema a menos.') + '</small>'
+      + (falta && d === 'Certificado energético' ? '<span class="tag-bloq">Bloqueia o anúncio</span>' : '')
+      + '</div></div>';
+  });
+  document.getElementById('lista-docs').innerHTML = html;
+  document.getElementById('doc-sub').textContent = faltam.length
+    ? 'Faltam-lhe ' + faltam.length + ' ' + (faltam.length === 1 ? 'documento' : 'documentos') + '. Comece já a reuni-los, é o que leva mais tempo.'
+    : 'Tem tudo. É mais raro do que imagina, e poupa-lhe semanas.';
 
-  /* ── Pixel Lead ── */
-  try{
-    fbq('track','Lead',{
-      content_name: ORIGEM,
-      content_category: 'NewBroker Master'
+  /* ---------- TRAVÕES ---------- */
+  var tv = D.travoes || [];
+  if(tv.length){
+    var h = '';
+    tv.forEach(function(t, i){
+      h += '<div class="travao"><div class="travao-n" aria-hidden="true">' + (i+1) + '</div>'
+         + '<div><b>' + t.t + '</b><p>' + t.d + '</p></div></div>';
     });
-  }catch(x){}
-
-  /* ── Badge ── */
-  var badge, badgeClass, barClass, msg;
-  if(score >= 8){
-    badge      = 'Excelente';
-    badgeClass = 'badge-exc';
-    barClass   = 'exc';
-    msg        = 'O seu perfil indica uma viabilidade muito elevada. Está numa posição sólida para concretizar a troca de casa.';
-  } else if(score >= 6){
-    badge      = 'Bom';
-    badgeClass = 'badge-bom';
-    barClass   = 'bom';
-    msg        = 'O seu perfil é favorável. Com a estratégia certa e o apoio especializado, a troca de casa é totalmente viável.';
+    document.getElementById('lista-travoes').innerHTML = h;
   } else {
-    badge      = 'Moderado';
-    badgeClass = 'badge-mod';
-    barClass   = 'mod';
-    msg        = 'Há alguns pontos a trabalhar, mas a troca de casa pode ser viável com o planeamento adequado e apoio especializado.';
+    document.getElementById('lista-travoes').innerHTML =
+      '<div class="sem-travoes"><b>Não identificámos travões críticos.</b><br>'
+      + 'A sua casa está em condições de ir a mercado. A partir daqui, o que faz a diferença é a estratégia de preço e a apresentação.</div>';
   }
 
-  /* ── Populate ── */
-  function id(x){ return document.getElementById(x) }
+  /* ---------- PRÓXIMOS PASSOS (ordenados pelo caso) ---------- */
+  var passos = [];
+  if(faltam.indexOf('Certificado energético') !== -1){
+    passos.push({t:'Peça já o certificado energético',
+      d:'É o documento mais demorado e sem ele não pode anunciar legalmente. Contacte um perito ADENE esta semana.'});
+  }
+  if(A.acordo === 'Ainda não há acordo entre todos' || A.acordo === 'Não sei, ainda não falámos'){
+    passos.push({t:'Feche o acordo entre todos os proprietários',
+      d:'Antes de mostrar a casa a quem quer que seja. Um comprador que descobre a meio que não há acordo, desaparece.'});
+  }
+  if(A.encargos === 'Penhora ou processo judicial'){
+    passos.push({t:'Trate do levantamento da penhora',
+      d:'Com apoio jurídico e em paralelo com tudo o resto. É o processo mais longo e determina a data possível da escritura.'});
+  }
+  if(D.preco < 60){
+    passos.push({t:'Peça uma avaliação de mercado antes de fixar o preço',
+      d:'Com base em vendas fechadas na sua zona, não em anúncios. Os anúncios mostram o que se pede, não o que se paga.'});
+  }
+  if(A.ocupacao === 'Está arrendado a inquilinos'){
+    passos.push({t:'Defina a estratégia com o inquilino',
+      d:'Vender com contrato ativo, negociar a saída ou vender a investidor. Cada caminho tem preço e prazo diferentes, por isso decida antes de anunciar.'});
+  }
+  if(faltam.length && faltam.indexOf('Certificado energético') === -1){
+    passos.push({t:'Reúna a documentação em falta',
+      d:'Caderneta e certidão pedem-se online em minutos. Trate-as já, para não travarem o negócio no fim.'});
+  }
+  if(A.mercado && A.mercado !== 'Não, ainda não' && (A.tempomercado === 'Entre 3 e 6 meses' || A.tempomercado === 'Mais de 6 meses')){
+    passos.push({t:'Reposicione o anúncio',
+      d:'Fotos novas, texto novo e revisão de preço. Um anúncio velho deixa de aparecer aos compradores certos.'});
+  }
+  passos.push({t:'Prepare a casa para as visitas',
+      d:'Despersonalizar, arrumar, tratar os pequenos arranjos e fotografar com luz natural. É o que mais influencia a primeira proposta.'});
 
-  var firstName = (a.nome||'').split(' ')[0] || 'utilizador';
-  id('sNome').textContent = firstName;
-  id('sScoreNum').childNodes[0].nodeValue = score % 1 === 0 ? score+'.0' : score;
-  id('sBadge').textContent = badge;
-  id('sBadge').className   = 'badge-pill ' + badgeClass;
-  id('sBadgeMsg').textContent = msg;
-  id('sBar').className = 'score-bar-fill ' + barClass;
-
-  /* ── Labels ── */
-  var prazoLbl = {
-    rapido:     'Urgente — o mais rápido possível',
-    '3meses':   'Curto prazo — menos de 3 meses',
-    '3a6meses': 'Médio prazo — 3 a 6 meses',
-    mais6meses: 'Longo prazo — mais de 6 meses'
-  };
-  var motivoLbl = {
-    familia:    'Família e espaço',
-    zona:       'Mudança de zona',
-    upgrade:    'Upgrade de qualidade de vida',
-    financeiro: 'Razões financeiras',
-    outro:      'Outro motivo'
-  };
-
-  id('sPrazo').textContent  = prazoLbl[a.prazo]          || a.prazo   || '—';
-  id('sMotivo').textContent = motivoLbl[a.motivo_mudanca] || a.motivo_mudanca || '—';
-
-  /* ── Aviso crédito ── */
-  var avisoTxt = a.credito_ativo === 'sim'
-    ? 'Certifique-se de que o seu banco permite a portabilidade do crédito habitação ou que oferece condições competitivas para novo financiamento. O capital em dívida condiciona a sua capacidade de aquisição — considere simular com o seu banco antes de avançar.'
-    : 'Ter o imóvel pago é uma vantagem financeira significativa. Avalie se pretende adquirir a próxima casa a pronto pagamento ou com recurso a financiamento — essa decisão determinará a estratégia ideal para si.';
-  id('sAvisoCred').textContent = avisoTxt;
-
-  /* ── CTAs ── */
-  var waTxt = encodeURIComponent(
-    'Olá! Realizei o Simulador NewBroker Master e o meu score de viabilidade foi ' + score + '/10. Gostaria de saber mais sobre as minhas opções.'
-  );
-  id('ctaWa').href  = 'https://wa.me/351966157771?text=' + waTxt;
-  id('ctaTel').href = 'tel:+351966157771';
-  id('ctaIg').href  = 'https://www.instagram.com/newbrokermaster/';
-
-  /* ── Animate score bar ── */
-  setTimeout(function(){
-    id('sBar').style.width = (score/10*100) + '%';
-  }, 350);
-
-  /* ── Fade in sections ── */
-  var fadeEls = document.querySelectorAll('.fade-in');
-  var delays  = [0, 120, 240, 360, 480];
-  fadeEls.forEach(function(el, i){
-    setTimeout(function(){
-      el.classList.add('visible');
-    }, 300 + (delays[i]||0));
+  var quatro = passos.slice(0,4);
+  var hp = '';
+  quatro.forEach(function(p, i){
+    hp += '<div class="passo-l"><div class="passo-n" aria-hidden="true">' + (i+1) + '</div>'
+        + '<div><b>' + p.t + '</b><p>' + p.d + '</p></div></div>';
   });
+  document.getElementById('lista-passos').innerHTML = hp;
 
+  /* ---------- CTA ---------- */
+  if(A.avaliacao === 'Sim, quero marcar'){
+    document.getElementById('cta-titulo').textContent = 'Recebemos o seu pedido de avaliação';
+    document.getElementById('cta-texto').textContent =
+      'Um consultor da New Broker Master entra em contacto consigo nas próximas 48 horas. Se preferir adiantar, fale connosco já por WhatsApp.';
+  }
+
+  var tipologia = (A.tipologia && A.tipo !== 'Terreno') ? (' ' + A.tipologia) : '';
+  var msg = 'Olá! Fiz o diagnóstico no site da New Broker Master. '
+          + 'Tenho ' + (A.tipo === 'Apartamento' ? 'um apartamento' : (A.tipo === 'Moradia' ? 'uma moradia' : (A.tipo === 'Terreno' ? 'um terreno' : 'um imóvel')))
+          + tipologia
+          + (A.local ? ' em ' + A.local : '')
+          + ' e o tempo estimado de venda foi ' + D.tempo + '. Gostaria de falar sobre as minhas opções.';
+
+  document.getElementById('lnk-wa').href =
+    'https://api.whatsapp.com/send/?phone=' + WHATSAPP_NUM
+    + '&text=' + encodeURIComponent(msg) + '&type=phone_number&app_absent=0';
+  document.getElementById('lnk-tel').href = 'tel:+' + WHATSAPP_NUM;
+  document.getElementById('lnk-ig').href = INSTAGRAM;
 })();
 </script>
 </body>
