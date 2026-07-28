@@ -238,15 +238,15 @@ body{
     </div>
 
     <div class="eixo">
-      <div class="eixo-topo"><span class="eixo-nome">Preço vs. Mercado</span><span class="eixo-pct" id="p-preco"></span></div>
-      <div class="eixo-tr"><i id="b-preco"></i></div>
-      <p class="eixo-leg">Mede se o seu valor está ancorado em dados de mercado ou em expectativa pessoal.</p>
-    </div>
-
-    <div class="eixo">
       <div class="eixo-topo"><span class="eixo-nome">Estado e Prontidão</span><span class="eixo-pct" id="p-estado"></span></div>
       <div class="eixo-tr"><i id="b-estado"></i></div>
       <p class="eixo-leg">Mede se a casa pode ser mostrada já e a impressão que deixa em visita.</p>
+    </div>
+
+    <div class="eixo">
+      <div class="eixo-topo"><span class="eixo-nome">Alinhamento da venda</span><span class="eixo-pct" id="p-venda"></span></div>
+      <div class="eixo-tr"><i id="b-venda"></i></div>
+      <p class="eixo-leg">Mede quão clara e focada está a decisão de vender: motivo, urgência e situação no mercado.</p>
     </div>
   </section>
 
@@ -314,8 +314,8 @@ body{
     setTimeout(function(){ b.style.width = valor + '%'; }, 220);
   }
   pintar('b-doc','p-doc', D.doc);
-  pintar('b-preco','p-preco', D.preco);
   pintar('b-estado','p-estado', D.estado);
+  pintar('b-venda','p-venda', D.venda);
 
   /* ---------- CHECKLIST ---------- */
   var ONDE = {
@@ -357,21 +357,21 @@ body{
 
   /* ---------- PRÓXIMOS PASSOS (ordenados pelo caso) ---------- */
   var passos = [];
-  if(faltam.indexOf('Certificado energético') !== -1){
-    passos.push({t:'Peça já o certificado energético',
-      d:'É o documento mais demorado e sem ele não pode anunciar legalmente. Contacte um perito ADENE esta semana.'});
-  }
-  if(A.acordo === 'Ainda não há acordo entre todos' || A.acordo === 'Não sei, ainda não falámos'){
-    passos.push({t:'Feche o acordo entre todos os proprietários',
-      d:'Antes de mostrar a casa a quem quer que seja. Um comprador que descobre a meio que não há acordo, desaparece.'});
-  }
   if(A.encargos === 'Penhora ou processo judicial'){
     passos.push({t:'Trate do levantamento da penhora',
       d:'Com apoio jurídico e em paralelo com tudo o resto. É o processo mais longo e determina a data possível da escritura.'});
   }
-  if(D.preco < 60){
-    passos.push({t:'Peça uma avaliação de mercado antes de fixar o preço',
-      d:'Com base em vendas fechadas na sua zona, não em anúncios. Os anúncios mostram o que se pede, não o que se paga.'});
+  if(faltam.indexOf('Certificado energético') !== -1){
+    passos.push({t:'Peça já o certificado energético',
+      d:'É o documento mais demorado e sem ele não pode anunciar legalmente. Contacte um perito ADENE esta semana.'});
+  }
+  if(A.encargos === 'Usufruto'){
+    passos.push({t:'Obtenha o consentimento do usufrutuário',
+      d:'Por escrito, antes de avançar. Sem ele não há escritura, por muito adiantada que esteja a venda.'});
+  }
+  if(A.encargos === 'Não sei'){
+    passos.push({t:'Confirme se o imóvel tem encargos',
+      d:'Peça a certidão permanente do registo predial. É onde constam hipotecas, penhoras e usufrutos que travam a escritura.'});
   }
   if(A.ocupacao === 'Está arrendado a inquilinos'){
     passos.push({t:'Defina a estratégia com o inquilino',
@@ -385,6 +385,12 @@ body{
     passos.push({t:'Reposicione o anúncio',
       d:'Fotos novas, texto novo e revisão de preço. Um anúncio velho deixa de aparecer aos compradores certos.'});
   }
+  if(A.prazo === 'Estou só a explorar a ideia'){
+    passos.push({t:'Clarifique o seu objetivo de venda',
+      d:'Definir um prazo concreto muda tudo: sem ele, a preparação arrasta-se e a casa nunca vai a mercado com força.'});
+  }
+  passos.push({t:'Peça uma avaliação de mercado',
+      d:'Com base em vendas fechadas na sua zona, não em anúncios. Os anúncios mostram o que se pede, não o que se paga, e o preço certo é o que mais pesa no tempo de venda.'});
   passos.push({t:'Prepare a casa para as visitas',
       d:'Despersonalizar, arrumar, tratar os pequenos arranjos e fotografar com luz natural. É o que mais influencia a primeira proposta.'});
 
